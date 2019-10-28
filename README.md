@@ -1,7 +1,5 @@
 # avell-unofficial-control-center
 
-[![Gitter](https://badges.gitter.im/Unofficial-CC/Lobby.svg)](https://gitter.im/Unofficial-CC/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
-
 This is a driver to control RGB keyboard in Linux Systems based on Avell Control Center.
 
 This project is at an early stage.
@@ -60,17 +58,13 @@ ITE Device(8291) is integrated in widely-used Tongfang gaming laptop barebones:
 - adjust brightness
 - disable RGB leds
 - set predefined styles
-
-#### To do:
-
-- implement a GUI interface in Pyqt/Pyside2
-- save/load profiles
-- set custom color in specific key
-- monitor, cpu/gpu load
+- set predefined style speed
+- set predefined style rotation
+- all but 2-3 of the predefined styles works.
 
 ## Installation
 
-### The easy way, using `pip3`
+### The easy way, using `pip3` (for the fork parent, not this one)
 
 Install via pip using sudo or with root user:
 
@@ -82,7 +76,7 @@ sudo pip3 install avell-unofficial-control-center
 
 ### The manual way, using `git`
 
-- Clone the repository (`git clone https://github.com/rodgomesc/avell-unofficial-control-center.git`), or update with `git pull` if cloned previously.
+- Clone the repository (`git clone https://github.com/FlameOfIgnis/avell-unofficial-control-center.git`), or update with `git pull` if cloned previously.
 - Build an installable package: `python3 setup.py build`
 - Install the package: `sudo python3 setup.py install`
 
@@ -120,7 +114,7 @@ To set keyboard predefined custom styles:
 aucc -s style
 ```
 
-Styles available are `rainbow`, `reactive`, `raindrop`, `marquee`, `aurora`, `pulse`, `wave`, `drop`, `firework`, `interactive_drop`, `interactive_aurora` and `interactive_firework`.
+Styles available are `rainbow`, `reactive`, `raindrop`, `marquee`, `aurora`, `pulse`, `wave`, `drop` and `firework`.
 
 With styles, you can also use -S to set style speed, and -r to set style rotation.
 
@@ -205,7 +199,3 @@ systemctl restart aucc.service
 ## Contributions
 
 Contributions of any kind are welcome. Please follow [pep-8](https://www.python.org/dev/peps/pep-0008/) coding style guides.
-
-## Donate :coffee: :hearts:
-
-This is a project I develop in my free time. If you use `avell-unofficial-control-center` or simply like the project and want to help please consider [donating a coffee](https://www.buymeacoffee.com/KCZRP52U7).
