@@ -38,7 +38,7 @@ ITE Device(8291) is integrated in widely-used Tongfang gaming laptop barebones:
 - PCSpecialist Recoil II & III (UK reseller)
 - Scan/3XS LG15 Vengeance Pro (UK reseller)
 - Overpowered 15 and 15+ (US reseller, sold via Walmart)
-- Monster Tulpar T5 (TR reseller)
+- Monster Tulpar T5-T7 (TR reseller)
 - MECHREVO Deep Sea Ghost Z2 (CN reseller)
 - Raionbook GS5 (IT reseller)
 - Illegear Onyx (MY reseller)
@@ -167,8 +167,6 @@ WantedBy=multi-user.target
 ```
 
 to write and save the content press `ESC` and hold `Shift+zz`
-
-for more options about customize colors, brightness and styles, folow [Usage](https://github.com/rodgomesc/avell-unofficial-control-center#usage) Instructions
 
 ### step 3:
 
