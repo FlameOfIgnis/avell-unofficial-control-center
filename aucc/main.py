@@ -15,24 +15,23 @@ from aucc.core.colors import (get_mono_color_vector,
                          _colors_available)
 
 
+#                   ?      ?                                
+# style template: (0x08, 0x02, STYLE_ID, DELAY_TIME, 0x24, 0x08, 0x00, 0x00)
 light_style = {
-    'rainbow':  (0x08, 0x02, 0x05, 0x05, 0x24, 0x00, 0x00, 0x00),
-    'reactive': (0x08, 0x02, 0x04, 0x05, 0x24, 0x08, 0x00, 0x00),
-    'raindrop': (0x08, 0x02, 0x0A, 0x05, 0x24, 0x08, 0x00, 0x00),
-    'marquee':  (0x08, 0x02, 0x09, 0x05, 0x24, 0x08, 0x00, 0x00),
-    'aurora':   (0x08, 0x02, 0x0E, 0x05, 0x24, 0x08, 0x00, 0x00),
-    'pulse':    (0x08, 0x02, 0x02, 0x05, 0x24, 0x00, 0x00, 0x00),
-    'wave':     (0x08, 0x02, 0x03, 0x05, 0x24, 0x00, 0x00, 0x00),
-    'drop':     (0x08, 0x02, 0x06, 0x05, 0x24, 0x00, 0x00, 0x00),
-    'firework': (0x08, 0x02, 0x11, 0x05, 0x24, 0x00, 0x00, 0x00),
+    'rainbow':  0x05,
+    'reactive': 0x04,
+    'raindrop': 0x0A,
+    'marquee':  0x09, 
+    'aurora':   0x0E, 
+    'pulse':    0x02, 
+    'wave':     0x03, 
+    'drop':     0x06, 
+    'firework': 0x11, 
 
     #interactive, will start from keypress
-    'interactive_drop':     (0x08, 0x02, 0x03, 0x06, 0x24, 0x00, 0x00, 0x00), 
-    'interactive_aurora':   (0x08, 0x02, 0x0E, 0x0F, 0x24, 0x08, 0x00, 0x00),
-    'interactive_firework': (0x08, 0x02, 0x12, 0x05, 0x24, 0x00, 0x00, 0x00),
-
-    #shut down keyboard lights
-    'disabled': (0x08, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00)
+    'interactive_drop':     0x03,
+    'interactive_aurora':   0x0E,
+    'interactive_firework': 0x12,
 }
 
 # keybpoard brightness have 4 variations 0x08,0x16,0x24,0x32
@@ -52,11 +51,11 @@ class ControlCenter(DeviceHandler):
     def disable_keyboard(self):
         self.ctrl_write(0x08, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00)
 
-    def keyboard_style(self, style):
-        self.ctrl_write(*light_style[style])
+    def keyboard_style(self, style,delay):
+        self.ctrl_write(0x08, 0x02, light_style[style], delay, 0x24, 0x08, 0x00, 0x00)
 
     def keyboard_styleDebug(self, style):
-        self.ctrl_write(0x08, 0x02, int(style), 0xf0, 0x24, 0x08, 0x00, 0x00)
+        self.ctrl_write(0x08, 0x02, int(style), 0x00, 0x24, 0x08, 0x00, 0x00)
 
     def adjust_brightness(self, brightness=None):
         if brightness:
@@ -112,6 +111,8 @@ def main():
                         help='Vertical alternating colors')
     parser.add_argument('-s', '--style',
                         help='one of (rainbow, reactive, raindrop, marquee, aurora)')
+    parser.add_argument('-S', '--speed',
+                        help='style speed, only to be used with -s (0-5)')
     parser.add_argument('-sd', '--styleDebug',
                         help='style byte directly from parameter')
     parser.add_argument('-d', '--disable', action='store_true',
@@ -129,7 +130,10 @@ def main():
     elif parsed.v_alt:
         control.v_alt_color_setup(*parsed.v_alt)
     elif parsed.style:
-        control.keyboard_style(parsed.style)
+        if parsed.speed and int(parsed.speed) <=5:
+            control.keyboard_style(parsed.style,0x05 - int(parsed.speed))
+        else:
+            control.keyboard_style(parsed.style,0x05)
     elif parsed.styleDebug:
         control.keyboard_styleDebug(parsed.styleDebug)
     else:
