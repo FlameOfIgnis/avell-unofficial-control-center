@@ -51,11 +51,14 @@ class ControlCenter(DeviceHandler):
     def disable_keyboard(self):
         self.ctrl_write(0x08, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00)
 
-    def keyboard_style(self, style,delay):
-        self.ctrl_write(0x08, 0x02, light_style[style], delay, 0x24, 0x08, 0x00, 0x00)
+    def keyboard_style(self,style,delay, rotation):
+        self.ctrl_write(0x08, 0x02, light_style[style], delay, 0x24, 0x08, rotation, 0x00)
+
+    #def keyboard_styleDebug(self, style):
+    #    self.ctrl_write(0x08, 0x02, int(style), 0x00, 0x24, 0x08, 0x00, 0x00)
 
     def keyboard_styleDebug(self, style):
-        self.ctrl_write(0x08, 0x02, int(style), 0x00, 0x24, 0x08, 0x00, 0x00)
+        self.ctrl_write(0x08, 0x02, 0x03, 0x00, 0x24, 0x08, int(style), 0x00)
 
     def adjust_brightness(self, brightness=None):
         if brightness:
@@ -113,6 +116,8 @@ def main():
                         help='one of (rainbow, reactive, raindrop, marquee, aurora)')
     parser.add_argument('-S', '--speed',
                         help='style speed, only to be used with -s (0-5)')
+    parser.add_argument('-r', '--rotation',
+                        help='style rotation, only to be used with -s, (1-4)')
     parser.add_argument('-sd', '--styleDebug',
                         help='style byte directly from parameter')
     parser.add_argument('-d', '--disable', action='store_true',
@@ -130,10 +135,14 @@ def main():
     elif parsed.v_alt:
         control.v_alt_color_setup(*parsed.v_alt)
     elif parsed.style:
-        if parsed.speed and int(parsed.speed) <=5:
-            control.keyboard_style(parsed.style,0x05 - int(parsed.speed))
-        else:
-            control.keyboard_style(parsed.style,0x05)
+        speed=3
+        rotation=1
+        if parsed.speed and int(parsed.speed) <=5 and int(parsed.speed) >=0:
+            speed=5-int(parsed.speed)
+        if parsed.rotation and int(parsed.rotation) <=4 and int(parsed.rotation) >=1:
+            rotation=int(parsed.rotation)          
+
+        control.keyboard_style(parsed.style,speed,rotation)
     elif parsed.styleDebug:
         control.keyboard_styleDebug(parsed.styleDebug)
     else:
