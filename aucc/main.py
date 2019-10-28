@@ -26,12 +26,7 @@ light_style = {
     'pulse':    0x02, 
     'wave':     0x03, 
     'drop':     0x06, 
-    'firework': 0x11, 
-
-    #interactive, will start from keypress
-    'interactive_drop':     0x03,
-    'interactive_aurora':   0x0E,
-    'interactive_firework': 0x12,
+    'firework': 0x11
 }
 
 # keybpoard brightness have 4 variations 0x08,0x16,0x24,0x32
@@ -51,14 +46,8 @@ class ControlCenter(DeviceHandler):
     def disable_keyboard(self):
         self.ctrl_write(0x08, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00)
 
-    def keyboard_style(self,style,delay, rotation):
-        self.ctrl_write(0x08, 0x02, light_style[style], delay, 0x24, 0x08, rotation, 0x00)
-
-    #def keyboard_styleDebug(self, style):
-    #    self.ctrl_write(0x08, 0x02, int(style), 0x00, 0x24, 0x08, 0x00, 0x00)
-
-    def keyboard_styleDebug(self, style):
-        self.ctrl_write(0x08, 0x02, 0x03, 0x00, 0x24, 0x08, int(style), 0x00)
+    def keyboard_style(self,style,delay, rotation, brightness):
+        self.ctrl_write(0x08, 0x02, light_style[style], delay, brightness, 0x08, rotation, 0x00)
 
     def adjust_brightness(self, brightness=None):
         if brightness:
@@ -136,13 +125,17 @@ def main():
         control.v_alt_color_setup(*parsed.v_alt)
     elif parsed.style:
         speed=3
+        brightness=0x32
         rotation=1
         if parsed.speed and int(parsed.speed) <=5 and int(parsed.speed) >=0:
             speed=5-int(parsed.speed)
-        if parsed.rotation and int(parsed.rotation) <=4 and int(parsed.rotation) >=1:
+        if parsed.rotation and int(parsed.rotation) <=4 and int(parsed.rotation) >=0:
             rotation=int(parsed.rotation)          
+        if parsed.brightness and int(parsed.brightness) <=4 and int(parsed.brightness) >=1:
+            brightness=brightness_map[int(parsed.brightness)]
 
-        control.keyboard_style(parsed.style,speed,rotation)
+
+        control.keyboard_style(parsed.style,speed,rotation, brightness)
     elif parsed.styleDebug:
         control.keyboard_styleDebug(parsed.styleDebug)
     else:
