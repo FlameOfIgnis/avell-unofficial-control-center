@@ -120,7 +120,23 @@ To set keyboard predefined custom styles:
 aucc -s style
 ```
 
-Styles available are `aurora`, `marquee`, `raindrop`, `reactive` and `rainbow`.
+Styles available are `rainbow`, `reactive`, `raindrop`, `marquee`, `aurora`, `pulse`, `wave`, `drop`, `firework`, `interactive_drop`, `interactive_aurora` and `interactive_firework`.
+
+With styles, you can also use -S to set style speed, and -r to set style rotation.
+
+Examples:
+```bash
+aucc -s wave
+```
+
+```bash
+aucc -s wave -S 4
+```
+
+```bash
+aucc -s wave -S 4 -r 2
+```
+
 
 ### Disable all keyboard backlight
 
